@@ -2,14 +2,9 @@
 {
     public class AccountEntity
     {
-        public enum AccountType
-        {
-            Saving,
-            Default
-        }
         public int Id { get; set; }
         public int UserId { get; set; }
         public double Balance { get; set; } = 0;
-        public string Type { get; set; }
+        public string Type { get; set; } = "Saving";
     }
 }

@@ -12,14 +12,13 @@ namespace Bank.WebApi.Repositories
         {
             _connection = connection;
         }
-        public async Task Create(AccountEntity account)
+        public async Task Create(CreateAccount account)
         {
-            string sql = $"INSERT INTO accounts (user_id, acc_type, balance) VALUES (@UserId, CAST(@Type AS account_type), @Balance)";
+            string sql = $"INSERT INTO accounts (user_id, acc_type) VALUES (@UserId, CAST(@Type AS account_type))";
             var args = new
             {
                 UserId = account.UserId,
-                Type = account.Type.ToString(),
-                Balance = account.Balance,
+                Type = account.Type.ToString()
             };
             await _connection.ExecuteAsync(sql, args);
         }

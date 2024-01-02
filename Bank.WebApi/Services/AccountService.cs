@@ -2,6 +2,7 @@
 using Bank.WebApi.Models.DTOs;
 using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
+using static Bank.WebApi.Models.DTOs.CreateAccount;
 using static Bank.WebApi.Models.Entities.AccountEntity;
 
 namespace Bank.WebApi.Services
@@ -23,11 +24,11 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
-            //AccountType type = Enum.Parse<AccountType>(accountType, true);
-            var entity = new AccountEntity
+            AccountType type = Enum.Parse<AccountType>(accountType, true);
+            var entity = new CreateAccount
             {
                 UserId = userId,
-                Type = accountType,
+                Type = type,
             };
             await _accountRepository.Create(entity);
         }
