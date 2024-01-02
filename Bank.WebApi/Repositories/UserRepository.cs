@@ -29,6 +29,7 @@ namespace Bank.WebApi.Repositories
         public async Task<UserEntity?> GetById(int Id)
         {
             string sql = $"SELECT * FROM users WHERE id = @Id";
+
             var args = new
             {
                 Id = Id
@@ -37,8 +38,8 @@ namespace Bank.WebApi.Repositories
         }
         public async Task<IEnumerable<AccountEntity?>> GetAccounts(int userId)
         {
-            string sql = $"SELECT * FROM accounts WHERE user_id = @userId";
-            return await _connection.QueryAsync<AccountEntity>(sql, new {userId});
+            string sql = $"SELECT user_id AS UserId, id, acc_type AS Type, balance FROM accounts WHERE user_id = @Id";
+            return await _connection.QueryAsync<AccountEntity>(sql, new {Id = userId});
         }
         public async Task<IEnumerable<TransactionEntity?>> GetTransactions(int userId)
         {
