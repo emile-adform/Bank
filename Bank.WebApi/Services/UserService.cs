@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bank.WebApi.Exceptions;
 using Bank.WebApi.Models.DTOs;
 using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
@@ -25,7 +26,12 @@ namespace Bank.WebApi.Services
         }
         public async Task<UserEntity> Get(int id)
         {
-            return await _userRepository.GetById(id);
+            var user = await _userRepository.GetById(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+            return user;
         }
     }
 }
