@@ -37,6 +37,8 @@ if (!result.Successful)
 builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<UserRepository>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

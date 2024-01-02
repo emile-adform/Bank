@@ -1,4 +1,5 @@
-﻿using Bank.WebApi.Models.DTOs;
+﻿using AutoMapper;
+using Bank.WebApi.Models.DTOs;
 using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
 
@@ -7,14 +8,16 @@ namespace Bank.WebApi.Services
     public class UserService
     {
         private readonly UserRepository _userRepository;
-        public UserService(UserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserService(UserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
         public async Task Create(CreateUser user)
         {
-            var newUser = new UserEntity { Name = user.Name, Address = user.Address };
-            await _userRepository.CreateUser(newUser);
+            var entity = _mapper.Map<UserEntity>(user);
+            await _userRepository.CreateUser(entity);
         }
     }
 }
