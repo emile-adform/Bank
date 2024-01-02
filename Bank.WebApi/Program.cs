@@ -26,6 +26,12 @@ EnsureDatabase.For.PostgresqlDatabase(dbConnectionString);
 
 var result = upgrader.PerformUpgrade();
 
+if (!result.Successful)
+{
+    // Log or handle the error appropriately
+    Console.WriteLine("Database migration failed: " + result.Error);
+}
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
