@@ -21,5 +21,19 @@ namespace Bank.WebApi.Repositories
             };
             await _connection.ExecuteAsync(sql, args);
         }
+        public async Task<IEnumerable<UserEntity>> GetAll()
+        {
+            string sql = $"SELECT * FROM users";
+            return await _connection.QueryAsync<UserEntity>(sql);
+        }
+        public async Task<UserEntity> GetById(int Id)
+        {
+            string sql = $"SELECT * FROM users WHERE id = @Id";
+            var args = new
+            {
+                Id = Id
+            };
+            return await _connection.QuerySingleAsync<UserEntity>(sql, args);
+        }
     }
 }

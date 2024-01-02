@@ -17,18 +17,18 @@ namespace Bank.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateUser user)
         {
-            _userService.Create(user);
+            await _userService.Create(user);
             return Ok();
         }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok();
+            return Ok(await _userService.Get());
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok();
+            return Ok(await _userService.Get(id));
         }
         [HttpGet("{id}/accounts")]
         public async Task<IActionResult> GetAccounts(int id)
