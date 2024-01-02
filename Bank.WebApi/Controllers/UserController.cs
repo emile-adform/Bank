@@ -18,7 +18,7 @@ namespace Bank.WebApi.Controllers
         public async Task<IActionResult> Create(CreateUser user)
         {
             await _userService.Create(user);
-            return Ok();
+            return Created();
         }
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -38,17 +38,19 @@ namespace Bank.WebApi.Controllers
         [HttpGet("{id}/transactions")]
         public async Task<IActionResult> GetTransactions(int id)
         {
-            return Ok();
+            return Ok(await _userService.GetTransactions(id));
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Update(int id, EditUser user)
         {
-            return Ok();
+            await _userService.Update(id, user);
+            return NoContent();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            await _userService.Delete(id);
+            return NoContent();
         }
     }
 }

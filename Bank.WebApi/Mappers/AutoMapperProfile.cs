@@ -9,6 +9,8 @@ namespace Bank.WebApi.Mappers
         public AutoMapperProfile()
         {
             CreateMap<CreateUser, UserEntity>().ReverseMap();
+            CreateMap<EditUser, UserEntity>().ReverseMap();
+
         }
     }
 }

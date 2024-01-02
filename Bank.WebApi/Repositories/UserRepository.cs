@@ -40,5 +40,31 @@ namespace Bank.WebApi.Repositories
             string sql = $"SELECT * FROM accounts WHERE user_id = @userId";
             return await _connection.QueryAsync<AccountEntity>(sql, new {userId});
         }
+        public async Task<IEnumerable<TransactionEntity?>> GetTransactions(int userId)
+        {
+            string sql = $"SELECT t.id, t.account_id, a.acc_type, t.amount, t.cause, t.created_at " +
+                $"FROM transactions t " +
+                $"JOIN accounts a ON t.account_id = a.id " +
+                $"WHERE a.user_id = @userId " +
+                $"ORDER BY t.id";
+            return await _connection.QueryAsync<TransactionEntity>(sql, new { userId });
+        }
+        public async Task EditUser(UserEntity user)
+        {
+            string sql = $"UPDATE users SET name = @Name, address = @Address WHERE id = @Id";
+            var args = new
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Address = user.Address
+            };
+            await _connection.ExecuteAsync(sql, args);
+        }
+        public async Task Delete(int Id)
+        {
+            string sql = $"DELETE FROM users WHERE id = @Id";
+
+            await _connection.ExecuteAsync(sql, new {Id});
+        }
     }
 }

@@ -43,5 +43,38 @@ namespace Bank.WebApi.Services
             var accounts = await _userRepository.GetAccounts(userId);
             return accounts;
         }
+        public async Task<IEnumerable<TransactionEntity>> GetTransactions(int userId)
+        {
+            var user = await _userRepository.GetById(userId);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+            var transactions = await _userRepository.GetTransactions(userId);
+            return transactions;
+        }
+        public async Task Update(int id, EditUser updateUser)
+        {
+            var user = await _userRepository.GetById(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            user.Name = updateUser.Name;
+            user.Address = updateUser.Address;
+
+            await _userRepository.EditUser(user);
+        }
+        public async Task Delete(int id)
+        {
+            var user = await _userRepository.GetById(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            await _userRepository.Delete(id);
+        }
     }
 }
