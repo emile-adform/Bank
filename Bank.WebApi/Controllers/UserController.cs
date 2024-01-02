@@ -31,11 +31,6 @@ namespace Bank.WebApi.Controllers
         {
             return Ok();
         }
-        [HttpPost("{id}/transfer")]
-        public async Task<IActionResult> Transfer(int transferToId, double amount)
-        {
-            return Ok();
-        }
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit()
         {
