@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bank.WebApi.Models.DTOs;
+using Bank.WebApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebApi.Controllers
 {
@@ -6,6 +8,18 @@ namespace Bank.WebApi.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
+        private readonly UserService _userService;
+        public UserController(UserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateUser user)
+        {
+            _userService.Create(user);
+            return Ok();
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -23,11 +37,6 @@ namespace Bank.WebApi.Controllers
         }
         [HttpGet("{id}/transactions")]
         public async Task<IActionResult> GetTransactions(int id)
-        {
-            return Ok();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Create()
         {
             return Ok();
         }

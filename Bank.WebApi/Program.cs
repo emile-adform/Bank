@@ -1,3 +1,5 @@
+using Bank.WebApi.Repositories;
+using Bank.WebApi.Services;
 using DbUp;
 using Npgsql;
 using System.Data;
@@ -31,6 +33,9 @@ if (!result.Successful)
     // Log or handle the error appropriately
     Console.WriteLine("Database migration failed: " + result.Error);
 }
+
+builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<UserRepository>();
 
 var app = builder.Build();
 
