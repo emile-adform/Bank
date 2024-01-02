@@ -33,7 +33,7 @@ namespace Bank.WebApi.Controllers
         [HttpGet("{id}/accounts")]
         public async Task<IActionResult> GetAccounts(int id)
         {
-            return Ok();
+            return Ok(await _userService.GetAccounts(id));
         }
         [HttpGet("{id}/transactions")]
         public async Task<IActionResult> GetTransactions(int id)

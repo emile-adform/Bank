@@ -35,5 +35,10 @@ namespace Bank.WebApi.Repositories
             };
             return await _connection.QueryFirstOrDefaultAsync<UserEntity?>(sql, args);
         }
+        public async Task<IEnumerable<AccountEntity?>> GetAccounts(int userId)
+        {
+            string sql = $"SELECT * FROM accounts WHERE user_id = @userId";
+            return await _connection.QueryAsync<AccountEntity>(sql, new {userId});
+        }
     }
 }

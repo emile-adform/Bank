@@ -33,5 +33,15 @@ namespace Bank.WebApi.Services
             }
             return user;
         }
+        public async Task<IEnumerable<AccountEntity>> GetAccounts(int userId)
+        {
+            var user = await _userRepository.GetById(userId);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+            var accounts = await _userRepository.GetAccounts(userId);
+            return accounts;
+        }
     }
 }
