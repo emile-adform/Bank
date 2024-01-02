@@ -9,15 +9,23 @@ namespace Bank.WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly AccountService _accountService;
+        public UserController(UserService userService, AccountService accountService)
         {
             _userService = userService;
+            _accountService = accountService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUser user)
         {
             await _userService.Create(user);
+            return Created();
+        }
+        [HttpPost("{id}/create-account")]
+        public async Task<IActionResult> CreateAccount(int id, string accountType)
+        {
+            await _accountService.Create(id, accountType);
             return Created();
         }
         [HttpGet]

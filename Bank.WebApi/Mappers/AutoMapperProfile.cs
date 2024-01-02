@@ -10,7 +10,7 @@ namespace Bank.WebApi.Mappers
         {
             CreateMap<CreateUser, UserEntity>().ReverseMap();
             CreateMap<EditUser, UserEntity>().ReverseMap();
-
+            CreateMap<CreateAccount, AccountEntity>().ReverseMap();
         }
     }
 }

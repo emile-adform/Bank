@@ -1,4 +1,4 @@
-﻿CREATE TYPE account_type AS ENUM ('saving', 'default');
+﻿CREATE TYPE account_type AS ENUM ('Saving', 'Default');
 
 create table users (
 	id serial PRIMARY KEY,

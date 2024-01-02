@@ -5,6 +5,8 @@ using DbUp;
 using Npgsql;
 using System.Data;
 using System.Reflection;
+using Dapper.Contrib.Extensions;
+using static Bank.WebApi.Models.Entities.AccountEntity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,7 @@ EnsureDatabase.For.PostgresqlDatabase(dbConnectionString);
 
 var result = upgrader.PerformUpgrade();
 
+
 if (!result.Successful)
 {
     // Log or handle the error appropriately
@@ -37,6 +40,8 @@ if (!result.Successful)
 
 builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<UserRepository>();
+builder.Services.AddTransient<AccountRepository>();
+builder.Services.AddTransient<AccountService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

@@ -11,11 +11,6 @@ namespace Bank.WebApi.Controllers
         {
             return Ok();
         }
-        [HttpPost]
-        public async Task<IActionResult> Create()
-        {
-            return Ok();
-        }
         [HttpPost("{id}/topup")]
         public async Task<IActionResult> TopUp(double amount)
         {

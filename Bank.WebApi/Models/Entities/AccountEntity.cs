@@ -4,12 +4,12 @@
     {
         public enum AccountType
         {
-            Savings,
+            Saving,
             Default
         }
         public int Id { get; set; }
         public int UserId { get; set; }
-        public double Balance { get; set; }
+        public double Balance { get; set; } = 0;
         public AccountType Type { get; set; }
     }
 }
