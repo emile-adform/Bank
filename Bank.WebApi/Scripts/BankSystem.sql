@@ -18,5 +18,6 @@ create table transactions (
 	id serial PRIMARY KEY,
 	account_id int,
 	amount decimal,
+	created_at DATE,
 	FOREIGN KEY (account_id) REFERENCES accounts(id)
 );

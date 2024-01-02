@@ -16,6 +16,11 @@ namespace Bank.WebApi.Controllers
         {
             return Ok();
         }
+        [HttpGet("{id}/accounts")]
+        public async Task<IActionResult> GetAccounts(int id)
+        {
+            return Ok();
+        }
         [HttpGet("{id}/transactions")]
         public async Task<IActionResult> GetTransactions(int id)
         {
@@ -23,6 +28,11 @@ namespace Bank.WebApi.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create()
+        {
+            return Ok();
+        }
+        [HttpPost("{id}/transfer")]
+        public async Task<IActionResult> Transfer(int transferToId, double amount)
         {
             return Ok();
         }
