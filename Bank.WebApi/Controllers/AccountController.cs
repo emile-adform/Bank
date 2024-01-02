@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bank.WebApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebApi.Controllers
 {
@@ -6,6 +7,16 @@ namespace Bank.WebApi.Controllers
     [Route("account")]
     public class AccountController : ControllerBase
     {
+        private readonly AccountService _accountService;
+        public AccountController(AccountService accountService)
+        {
+            _accountService = accountService;
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            return Ok(await _accountService.Get(id));
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -18,11 +29,6 @@ namespace Bank.WebApi.Controllers
         }
         [HttpPost("{id}/transfer")]
         public async Task<IActionResult> Transfer(int transferToId, double amount)
-        {
-            return Ok();
-        }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
         {
             return Ok();
         }

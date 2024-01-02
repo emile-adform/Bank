@@ -10,6 +10,6 @@
         public int Id { get; set; }
         public int UserId { get; set; }
         public double Balance { get; set; } = 0;
-        public AccountType Type { get; set; }
+        public string Type { get; set; }
     }
 }

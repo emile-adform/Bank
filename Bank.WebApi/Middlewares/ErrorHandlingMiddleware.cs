@@ -30,6 +30,9 @@ namespace Bank.WebApi.Middlewares
                     case UserNotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case AccountNotFoundException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

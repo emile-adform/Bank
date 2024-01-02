@@ -23,13 +23,22 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
-            AccountType type = Enum.Parse<AccountType>(accountType, true);
+            //AccountType type = Enum.Parse<AccountType>(accountType, true);
             var entity = new AccountEntity
             {
                 UserId = userId,
-                Type = type,
+                Type = accountType,
             };
             await _accountRepository.Create(entity);
+        }
+        public async Task<AccountEntity?> Get(int id)
+        {
+            var account = await _accountRepository.Get(id);
+            if (account is null)
+            {
+                throw new AccountNotFoundException();
+            }
+            return account;
         }
     }
 }
