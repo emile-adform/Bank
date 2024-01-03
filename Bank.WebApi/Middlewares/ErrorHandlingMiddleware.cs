@@ -36,6 +36,12 @@ namespace Bank.WebApi.Middlewares
                     case IllegalAmountException e:
                         response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
                         break;
+                    case InsufficientFundsException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
+                    case ClosingNotEmptyAccountException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

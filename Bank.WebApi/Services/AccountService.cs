@@ -27,6 +27,11 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
+            var accounts = await _accountRepository.GetAccounts(userId);
+            if (accounts.Count() > 1)
+            {
+                throw new MaxNumberOfAccountsReachedException();
+            }
             AccountType type = Enum.Parse<AccountType>(accountType, true);
             var entity = new CreateAccount
             {
@@ -96,6 +101,10 @@ namespace Bank.WebApi.Services
             {
                 throw new IllegalTransactionException();
             }
+            if(accountFrom.Balance < Amount + 1)
+            {
+                throw new InsufficientFundsException();
+            }
             var transferFee = 1.0;
             var transferFromAmount = (Amount + transferFee) * -1;
 
@@ -118,6 +127,15 @@ namespace Bank.WebApi.Services
         }
         public async Task Delete(int id)
         {
+            var account = await _accountRepository.Get(id);
+            if(account is null)
+            {
+                throw new AccountNotFoundException();
+            }
+            if(account.Balance > 0)
+            {
+                throw new ClosingNotEmptyAccountException();
+            }
             await _accountRepository.Delete(id);
         }
     }

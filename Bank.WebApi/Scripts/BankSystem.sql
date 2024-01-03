@@ -6,13 +6,19 @@ create table users (
 	address varchar(200)
 );
 
+create index idx_users
+on users(id);
+
 create table accounts (
 	id serial PRIMARY KEY,
 	acc_type account_type,
 	user_id int,
-	balance decimal,
+	balance decimal DEFAULT 0,
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+create index idx_accounts
+on accounts(id);
 
 create table transactions (
 	id serial PRIMARY KEY,
@@ -22,3 +28,6 @@ create table transactions (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (account_id) REFERENCES accounts(id)
 );
+
+create index idx_transactions
+on transactions(account_id);
