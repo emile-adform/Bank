@@ -80,7 +80,7 @@ namespace Bank.WebApi.Services
             var accounts = await _accountRepository.GetAccounts(id);
             if (accounts.Any())
             {
-                throw new ClosingNotEmptyAccountException();
+                throw new UserHasActiveAccountsException();
             }
             await _userRepository.Delete(id);
         }
