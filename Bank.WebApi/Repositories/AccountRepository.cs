@@ -32,5 +32,10 @@ namespace Bank.WebApi.Repositories
             string sql = $"SELECT id, user_id AS UserId, balance, acc_type AS Type FROM accounts";
             return await _connection.QueryAsync<AccountEntity>(sql);
         }
+        public async Task<double> TopUp(int AccountId, double Amount)
+        {
+            string sql = $"UPDATE accounts SET balance = balance + @Amount WHERE id = @AccountId RETURNING balance";
+            return await _connection.QueryFirstOrDefaultAsync<double>(sql, new { Amount, AccountId });
+        }
     }
 }

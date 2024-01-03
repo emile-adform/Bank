@@ -33,6 +33,9 @@ namespace Bank.WebApi.Middlewares
                     case AccountNotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case IllegalAmountException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;

@@ -23,9 +23,9 @@ namespace Bank.WebApi.Controllers
             return Ok(await _accountService.Get());
         }
         [HttpPost("{id}/topup")]
-        public async Task<IActionResult> TopUp(double amount)
+        public async Task<IActionResult> TopUp(int id, double amount)
         {
-            return Ok();
+            return Ok(await _accountService.TopUp(id, amount));
         }
         [HttpPost("{id}/transfer")]
         public async Task<IActionResult> Transfer(int transferToId, double amount)

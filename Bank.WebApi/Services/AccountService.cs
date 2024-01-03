@@ -45,5 +45,18 @@ namespace Bank.WebApi.Services
         {
             return await _accountRepository.Get();
         }
+        public async Task<double> TopUp(int id, double amount)
+        {
+            if(amount < 0)
+            {
+                throw new IllegalAmountException();
+            }
+            var account = await _accountRepository.Get(id);
+            if (account is null)
+            {
+                throw new AccountNotFoundException();
+            }
+            return await _accountRepository.TopUp(id, amount);
+        }
     }
 }
