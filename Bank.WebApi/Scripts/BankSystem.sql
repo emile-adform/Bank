@@ -19,6 +19,6 @@ create table transactions (
 	account_id int,
 	amount decimal,
 	cause varchar(200),
-	created_at DATE,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (account_id) REFERENCES accounts(id)
 );

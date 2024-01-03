@@ -37,5 +37,11 @@ namespace Bank.WebApi.Repositories
             string sql = $"UPDATE accounts SET balance = balance + @Amount WHERE id = @AccountId RETURNING balance";
             return await _connection.QueryFirstOrDefaultAsync<double>(sql, new { Amount, AccountId });
         }
+        public async Task Transfer(int TransferFromId, int TransferToId, double amount)
+        {
+            string sql = $"INSERT INTO transactions (account_id, amount) VALUES (@TransferFromId, -@amount)," +
+                $"(@TransferToId, @amount)";
+            await _connection.ExecuteAsync(sql, new {TransferFromId, TransferToId, amount });
+        }
     }
 }

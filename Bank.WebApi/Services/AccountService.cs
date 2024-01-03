@@ -58,5 +58,26 @@ namespace Bank.WebApi.Services
             }
             return await _accountRepository.TopUp(id, amount);
         }
+        public async Task Transfer(int AccountId, int TransferToId, double Amount)
+        {
+            if (Amount < 0)
+            {
+                throw new IllegalAmountException();
+            }
+            var accountFrom = await _accountRepository.Get(AccountId);
+            var accountTo = await _accountRepository.Get(TransferToId);
+
+            if (accountFrom is null || accountTo is null)
+            {
+                throw new AccountNotFoundException();
+            }
+            if(AccountId == TransferToId)
+            {
+                throw new IllegalTransactionException();
+            }
+            var transferFee = 1.0;
+            Amount += transferFee;
+            await _accountRepository.Transfer(AccountId, TransferToId, Amount);
+        }
     }
 }
