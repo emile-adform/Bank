@@ -31,7 +31,7 @@ namespace Bank.WebApi.Controllers
         public async Task<IActionResult> Transfer(int id, int transferToId, double amount, string reason)
         {
             await _accountService.Transfer(id, transferToId, amount, reason);
-            return Ok();
+            return NoContent();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

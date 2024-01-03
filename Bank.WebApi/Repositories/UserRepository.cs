@@ -13,7 +13,8 @@ namespace Bank.WebApi.Repositories
         }
         public async Task CreateUser(UserEntity user)
         {
-            string sql = $"INSERT INTO users (name, address) VALUES (@Name, @Address)";
+            string sql = @$"INSERT INTO users (name, address) 
+                        VALUES (@Name, @Address)";
             var args = new
             {
                 Name = user.Name,
@@ -23,12 +24,16 @@ namespace Bank.WebApi.Repositories
         }
         public async Task<IEnumerable<UserEntity>> GetAll()
         {
-            string sql = $"SELECT id, name, address, is_deleted AS IsDeleted FROM users WHERE is_deleted = false";
+            string sql = @$"SELECT id, name, address, is_deleted AS IsDeleted 
+                        FROM users 
+                        WHERE is_deleted = false";
             return await _connection.QueryAsync<UserEntity>(sql);
         }
         public async Task<UserEntity?> GetById(int Id)
         {
-            string sql = $"SELECT id, name, address, is_deleted AS IsDeleted FROM users WHERE id = @Id AND is_deleted = false";
+            string sql = @$"SELECT id, name, address, is_deleted AS IsDeleted 
+                        FROM users 
+                        WHERE id = @Id AND is_deleted = false";
 
             var args = new
             {

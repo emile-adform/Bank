@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Bank.WebApi.Exceptions;
 using Bank.WebApi.Models.DTOs;
-using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
 using System.Transactions;
 using static Bank.WebApi.Models.DTOs.CreateAccount;
-using static Bank.WebApi.Models.Entities.AccountEntity;
-
 namespace Bank.WebApi.Services
 {
     public class AccountService
@@ -96,7 +93,7 @@ namespace Bank.WebApi.Services
         }
         public async Task Transfer(int AccountFromId, int TransferToId, double Amount, string reason)
         {
-            if (Amount < 0)
+            if (Amount <= 0)
             {
                 throw new IllegalAmountException();
             }
