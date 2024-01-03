@@ -1,4 +1,5 @@
-﻿using Bank.WebApi.Exceptions;
+﻿using AutoMapper;
+using Bank.WebApi.Exceptions;
 using Bank.WebApi.Models.DTOs;
 using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
@@ -13,11 +14,14 @@ namespace Bank.WebApi.Services
         private readonly AccountRepository _accountRepository;
         private readonly UserRepository _userRepository;
         private readonly TransactionRepository _transactionRepository;
-        public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository)
+        private readonly IMapper _mapper;
+        public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository, 
+            IMapper mapper)
         {
             _accountRepository = accountRepository;
             _userRepository = userRepository;
             _transactionRepository = transactionRepository;
+            _mapper = mapper;
 
         }
         public async Task Create(int userId, string accountType)
@@ -40,18 +44,24 @@ namespace Bank.WebApi.Services
             };
             await _accountRepository.Create(entity);
         }
-        public async Task<AccountEntity?> Get(int id)
+        public async Task<ReturnAccountDto?> Get(int id)
         {
             var account = await _accountRepository.Get(id);
             if (account is null)
             {
                 throw new AccountNotFoundException();
             }
-            return account;
+            return _mapper.Map<ReturnAccountDto>(account);
         }
-        public async Task<IEnumerable<AccountEntity>> Get()
+        public async Task<IEnumerable<ReturnAccountDto>> Get()
         {
-            return await _accountRepository.Get();
+            var accounts = await _accountRepository.Get();
+            var accountsDtos = new List<ReturnAccountDto>();
+            foreach (var account in accounts)
+            {
+                accountsDtos.Add(_mapper.Map<ReturnAccountDto>(account));
+            }
+            return accountsDtos;
         }
         public async Task<double> TopUp(int id, double amount)
         {
