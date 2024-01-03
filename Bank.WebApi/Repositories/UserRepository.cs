@@ -23,12 +23,12 @@ namespace Bank.WebApi.Repositories
         }
         public async Task<IEnumerable<UserEntity>> GetAll()
         {
-            string sql = $"SELECT * FROM users";
+            string sql = $"SELECT id, name, address, is_deleted AS IsDeleted FROM users WHERE is_deleted = false";
             return await _connection.QueryAsync<UserEntity>(sql);
         }
         public async Task<UserEntity?> GetById(int Id)
         {
-            string sql = $"SELECT * FROM users WHERE id = @Id";
+            string sql = $"SELECT id, name, address, is_deleted AS IsDeleted FROM users WHERE id = @Id AND is_deleted = false";
 
             var args = new
             {
@@ -49,7 +49,7 @@ namespace Bank.WebApi.Repositories
         }
         public async Task Delete(int Id)
         {
-            string sql = $"DELETE FROM users WHERE id = @Id";
+            string sql = $"UPDATE users SET is_deleted = true WHERE id = @Id";
 
             await _connection.ExecuteAsync(sql, new {Id});
         }

@@ -77,7 +77,11 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
-
+            var accounts = await _accountRepository.GetAccounts(id);
+            if (accounts.Any())
+            {
+                throw new ClosingNotEmptyAccountException();
+            }
             await _userRepository.Delete(id);
         }
     }
