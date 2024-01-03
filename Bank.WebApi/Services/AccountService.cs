@@ -128,7 +128,7 @@ namespace Bank.WebApi.Services
         public async Task Delete(int id)
         {
             var account = await _accountRepository.Get(id);
-            if(account is null)
+            if(account is null || account.IsDeleted == true)
             {
                 throw new AccountNotFoundException();
             }

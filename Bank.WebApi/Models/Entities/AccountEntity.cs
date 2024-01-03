@@ -6,5 +6,6 @@
         public int UserId { get; set; }
         public double Balance { get; set; }
         public string Type { get; set; } = "Saving";
+        public bool IsDeleted { get; set; }
     }
 }

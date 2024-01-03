@@ -3,7 +3,8 @@
 create table users (
 	id serial PRIMARY KEY,
 	name varchar(100),
-	address varchar(200)
+	address varchar(200),
+	is_deleted BOOL NOT NULL DEFAULT false,
 );
 
 create index idx_users
@@ -14,6 +15,7 @@ create table accounts (
 	acc_type account_type,
 	user_id int,
 	balance decimal DEFAULT 0,
+	is_deleted BOOL NOT NULL DEFAULT false,
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
