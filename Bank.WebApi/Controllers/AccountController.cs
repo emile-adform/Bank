@@ -20,7 +20,7 @@ namespace Bank.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok();
+            return Ok(await _accountService.Get());
         }
         [HttpPost("{id}/topup")]
         public async Task<IActionResult> TopUp(double amount)

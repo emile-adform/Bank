@@ -41,5 +41,9 @@ namespace Bank.WebApi.Services
             }
             return account;
         }
+        public async Task<IEnumerable<AccountEntity>> Get()
+        {
+            return await _accountRepository.Get();
+        }
     }
 }
