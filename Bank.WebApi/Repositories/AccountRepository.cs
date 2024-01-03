@@ -32,16 +32,16 @@ namespace Bank.WebApi.Repositories
             string sql = $"SELECT id, user_id AS UserId, balance, acc_type AS Type FROM accounts";
             return await _connection.QueryAsync<AccountEntity>(sql);
         }
-        public async Task<double> TopUp(int AccountId, double Amount)
+        public async Task<double> UpdateBalance(int AccountId, double Amount)
         {
             string sql = $"UPDATE accounts SET balance = balance + @Amount WHERE id = @AccountId RETURNING balance";
             return await _connection.QueryFirstOrDefaultAsync<double>(sql, new { Amount, AccountId });
         }
-        public async Task Transfer(int TransferFromId, int TransferToId, double amount)
+        public async Task Delete(int Id)
         {
-            string sql = $"INSERT INTO transactions (account_id, amount) VALUES (@TransferFromId, -@amount)," +
-                $"(@TransferToId, @amount)";
-            await _connection.ExecuteAsync(sql, new {TransferFromId, TransferToId, amount });
+            string sql = $"DELETE FROM accounts WHERE id = @Id";
+            await _connection.ExecuteAsync(sql);
         }
+
     }
 }

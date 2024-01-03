@@ -2,6 +2,7 @@
 using Bank.WebApi.Models.DTOs;
 using Bank.WebApi.Models.Entities;
 using Bank.WebApi.Repositories;
+using System.Transactions;
 using static Bank.WebApi.Models.DTOs.CreateAccount;
 using static Bank.WebApi.Models.Entities.AccountEntity;
 
@@ -11,10 +12,12 @@ namespace Bank.WebApi.Services
     {
         private readonly AccountRepository _accountRepository;
         private readonly UserRepository _userRepository;
-        public AccountService(AccountRepository accountRepository, UserRepository userRepository)
+        private readonly TransactionRepository _transactionRepository;
+        public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository)
         {
             _accountRepository = accountRepository;
             _userRepository = userRepository;
+            _transactionRepository = transactionRepository;
 
         }
         public async Task Create(int userId, string accountType)
@@ -56,28 +59,66 @@ namespace Bank.WebApi.Services
             {
                 throw new AccountNotFoundException();
             }
-            return await _accountRepository.TopUp(id, amount);
+
+            string reason = "Top Up";
+            double currentBalance = 0;
+
+            using (var transactionScopeBalance = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    currentBalance = await _accountRepository.UpdateBalance(id, amount);
+                    await _transactionRepository.AddTransaction(id, amount, reason);
+
+                    transactionScopeBalance.Complete();
+                    return currentBalance;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception();
+                }
+            }
         }
-        public async Task Transfer(int AccountId, int TransferToId, double Amount)
+        public async Task Transfer(int AccountFromId, int TransferToId, double Amount, string reason)
         {
             if (Amount < 0)
             {
                 throw new IllegalAmountException();
             }
-            var accountFrom = await _accountRepository.Get(AccountId);
+            var accountFrom = await _accountRepository.Get(AccountFromId);
             var accountTo = await _accountRepository.Get(TransferToId);
 
             if (accountFrom is null || accountTo is null)
             {
                 throw new AccountNotFoundException();
             }
-            if(AccountId == TransferToId)
+            if(AccountFromId == TransferToId)
             {
                 throw new IllegalTransactionException();
             }
             var transferFee = 1.0;
-            Amount += transferFee;
-            await _accountRepository.Transfer(AccountId, TransferToId, Amount);
+            var transferFromAmount = (Amount + transferFee) * -1;
+
+            using (var transactionScopeTransfer = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    await _transactionRepository.AddTransaction(AccountFromId, transferFromAmount, reason);
+                    await _accountRepository.UpdateBalance(AccountFromId, transferFromAmount);
+                    await _transactionRepository.AddTransaction(TransferToId, Amount, reason);
+                    await _accountRepository.UpdateBalance(TransferToId, Amount);
+
+                    transactionScopeTransfer.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception();
+                }
+            }
+        }
+        public async Task Delete(int id)
+        {
+            await _accountRepository.Delete(id);
         }
     }
 }

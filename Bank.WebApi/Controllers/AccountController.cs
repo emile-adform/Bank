@@ -28,15 +28,16 @@ namespace Bank.WebApi.Controllers
             return Ok(await _accountService.TopUp(id, amount));
         }
         [HttpPost("{id}/transfer")]
-        public async Task<IActionResult> Transfer(int id, int transferToId, double amount)
+        public async Task<IActionResult> Transfer(int id, int transferToId, double amount, string reason)
         {
-            await _accountService.Transfer(id, transferToId, amount);
+            await _accountService.Transfer(id, transferToId, amount, reason);
             return Ok();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            await _accountService.Delete(id);
+            return NoContent();
         }
     }
 }
