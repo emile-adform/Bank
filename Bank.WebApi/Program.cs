@@ -5,8 +5,7 @@ using DbUp;
 using Npgsql;
 using System.Data;
 using System.Reflection;
-using Dapper.Contrib.Extensions;
-using static Bank.WebApi.Models.Entities.AccountEntity;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
