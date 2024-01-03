@@ -24,20 +24,26 @@ namespace Bank.WebApi.Services
             var entity = _mapper.Map<UserEntity>(user);
             await _userRepository.CreateUser(entity);
         }
-        public async Task<IEnumerable<UserEntity>> Get()
+        public async Task<IEnumerable<ReturnUserDto>> Get()
         {
-            return await _userRepository.GetAll();
+            var users = await _userRepository.GetAll();
+            var usersDtos = new List<ReturnUserDto>();
+            foreach (var user in users)
+            {
+                usersDtos.Add(_mapper.Map<ReturnUserDto>(user));
+            }
+            return usersDtos;
         }
-        public async Task<UserEntity> Get(int id)
+        public async Task<ReturnUserDto> Get(int id)
         {
             var user = await _userRepository.GetById(id);
             if (user is null)
             {
                 throw new UserNotFoundException();
             }
-            return user;
+            return _mapper.Map<ReturnUserDto>(user);
         }
-        public async Task<IEnumerable<AccountEntity>> GetAccounts(int userId)
+        public async Task<IEnumerable<ReturnAccountDto>> GetAccounts(int userId)
         {
             var user = await _userRepository.GetById(userId);
             if (user is null)
@@ -45,7 +51,12 @@ namespace Bank.WebApi.Services
                 throw new UserNotFoundException();
             }
             var accounts = await _accountRepository.GetAccounts(userId);
-            return accounts;
+            var accountsDtos = new List<ReturnAccountDto>();
+            foreach (var account in accounts)
+            {
+                accountsDtos.Add(_mapper.Map<ReturnAccountDto>(account));
+            }
+            return accountsDtos;
         }
         public async Task<IEnumerable<TransactionEntity>> GetTransactions(int userId)
         {
