@@ -42,6 +42,15 @@ namespace Bank.WebApi.Middlewares
                     case ClosingNotEmptyAccountException e:
                         response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
                         break;
+                    case UserHasActiveAccountsException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
+                    case IllegalTransactionException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
+                    case MaxNumberOfAccountsReachedException e:
+                        response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
