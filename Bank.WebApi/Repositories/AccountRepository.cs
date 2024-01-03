@@ -32,6 +32,11 @@ namespace Bank.WebApi.Repositories
             string sql = $"SELECT id, user_id AS UserId, balance, acc_type AS Type FROM accounts";
             return await _connection.QueryAsync<AccountEntity>(sql);
         }
+        public async Task<IEnumerable<AccountEntity?>> GetAccounts(int userId)
+        {
+            string sql = $"SELECT user_id AS UserId, id, acc_type AS Type, balance FROM accounts WHERE user_id = @Id";
+            return await _connection.QueryAsync<AccountEntity>(sql, new { Id = userId });
+        }
         public async Task<double> UpdateBalance(int AccountId, double Amount)
         {
             string sql = $"UPDATE accounts SET balance = balance + @Amount WHERE id = @AccountId RETURNING balance";

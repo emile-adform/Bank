@@ -43,6 +43,8 @@ builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<AccountRepository>();
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<TransactionRepository>();
+builder.Services.AddTransient<TransactionService>();
+
 
 builder.Services.AddAutoMapper(typeof(Program));
 

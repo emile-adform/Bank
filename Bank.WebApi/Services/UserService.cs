@@ -9,11 +9,15 @@ namespace Bank.WebApi.Services
     public class UserService
     {
         private readonly UserRepository _userRepository;
+        private readonly AccountRepository _accountRepository;
+        private readonly TransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
-        public UserService(UserRepository userRepository, IMapper mapper)
+        public UserService(UserRepository userRepository, IMapper mapper, AccountRepository accountRepository, TransactionRepository transactionRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _accountRepository = accountRepository;
+            _transactionRepository = transactionRepository;
         }
         public async Task Create(CreateUser user)
         {
@@ -40,7 +44,7 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
-            var accounts = await _userRepository.GetAccounts(userId);
+            var accounts = await _accountRepository.GetAccounts(userId);
             return accounts;
         }
         public async Task<IEnumerable<TransactionEntity>> GetTransactions(int userId)
@@ -50,7 +54,7 @@ namespace Bank.WebApi.Services
             {
                 throw new UserNotFoundException();
             }
-            var transactions = await _userRepository.GetTransactions(userId);
+            var transactions = await _transactionRepository.GetTransactions(userId);
             return transactions;
         }
         public async Task Update(int id, EditUser updateUser)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bank.WebApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebApi.Controllers
 {
@@ -6,15 +7,15 @@ namespace Bank.WebApi.Controllers
     [Route("transaction")]
     public class TransactionController : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> Create()
+        private readonly TransactionService _transactionService;
+        public TransactionController(TransactionService transactionService)
         {
-            return Ok();
+            _transactionService = transactionService;
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int userId)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            return Ok();
+            return Ok(await _transactionService.Get());
         }
     }
 }
